@@ -1,0 +1,34 @@
+"""
+1 - найти текст
+2 - почистить от мусора
+3 - посчитать слова
+
+3.1 - убрать короткие предлоги с текста
+3.2 - вывести топ 10 слов
+4 - в будущем добавить визуализацию
+"""
+
+STOP_WORDS = {
+    'и', 'в', 'во', 'на', 'с', 'со', 'к', 'ко', 'у', 'из', 'от', 'до', 'по',
+    'под', 'над', 'перед', 'за', 'про', 'о', 'об', 'обо', 'при', 'без', 'вне',
+    'для', 'ради', 'как', 'но', 'а', 'то', 'же', 'ли', 'бы', 'ни', 'не', 'нет',
+    'да', 'что', 'чтобы', 'если', 'так', 'вот', 'это', 'тот', 'такой', 'мне',
+    'мной', 'он', 'она', 'они', 'мы', 'вы', 'я', 'ты', 'мой', 'твой', 'свой',
+    'его', 'её', 'их', 'ваш', 'наш'
+}
+
+from collections import Counter
+from data.text import mail_tatiana_oneginu, angelo
+
+
+def parser_prose(txt: str):
+    arr = (x for x in txt if x == ' ' or x.isalpha() or x == '\n')
+    ob = Counter(''.join(arr).lower().split())
+    filter_ob = {k: v for k, v in ob.items() if k not in STOP_WORDS}
+    sort_ob = dict(sorted(filter_ob.items(), key=lambda x: x[1], reverse=True)[:10])
+    return sort_ob
+
+
+if __name__ == '__main__':
+    print(parser_prose(mail_tatiana_oneginu))
+    print(parser_prose(angelo))
